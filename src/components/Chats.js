@@ -7,12 +7,18 @@ import LoadingScreen from 'react-loading-screen';
 import { auth } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
 
+import useSound from 'use-sound';
+let sound = require('../assets/sound/sound.mp3');
+
+
 let Chats = () => {
     let history = useHistory();
     let { user } = useAuth();
     let [loading, setLoading] = useState(true);
 
     // console.log(user);
+
+    const [play] = useSound(sound);
 
     let handleLogout = async ()=> {
         await auth.signOut();
@@ -93,6 +99,8 @@ let Chats = () => {
                 projectID={process.env.REACT_APP_projectID}
                 userName={user.email}
                 userSecret={user.uid}
+
+                onNewMessage={(chatId, message) => play()}
             />
         </div>
     );
